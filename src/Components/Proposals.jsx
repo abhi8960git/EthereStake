@@ -118,7 +118,8 @@ const Proposals = () => {
                                     </td>
                                     <td>
                                         {/* link */}
-                                       <button
+                                       <Link
+                                       to={'/proposal/' + proposal.id}
                                        className='dark:border rounded-full px-6 py-2.5 dark:border-orange-600
                                        dark:text-orange-600 dark:bg-transparent font-medium text-xs leading-tight
                                        uppercase hover:border-orange-700 focus:border-orange-700
@@ -127,7 +128,7 @@ const Proposals = () => {
                                        >
                                                 View
 
-                                       </button>
+                                       </Link>
 
                                        {
                                         // yhn bcha h kuch time wala kaam
