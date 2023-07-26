@@ -2,8 +2,18 @@ import React from 'react'
 import { GrView } from 'react-icons/gr'
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import { LiaEthereum } from 'react-icons/lia'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/utils/interfaces'
+import { daysRemaining, truncate } from '@/utils/helper'
+import { payOutBeneficiary, toWei } from '@/services/blockchain'
+import Link from 'next/link'
+import { FcCancel } from 'react-icons/fc'
 
 const Table = () => {
+    const { proposals } = useSelector((state: RootState) => state.globalStates)
+
+
+
     return (
 
         <section className="table__body">
@@ -19,84 +29,48 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody className='text-white'>
-                    <tr className='text-slate-200s'>
+                    {
+                        proposals.map((proposals, key) =>
+                            <tr className='text-slate-200s' key={proposals.id}> 
 
-                        <td> Zinzu Chan Lee</td>
-                        <td> Seoul </td>
-                        <td> 17 Dec, 2022 </td>
-                        <td>
-                            <div className="flex gap-4 items-center justify-center">
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <GrView />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <IoMdCheckmarkCircleOutline />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <LiaEthereum />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr className='text-slate-200s'>
+                                <td>{truncate({ text: proposals.proposer, startChars: 4, endChars: 4, maxLength: 11 })}</td>
+                                <td> {truncate({ text: proposals.title, startChars: 4, endChars: 4, maxLength: 11 })} </td>
+                                <td> {new Date().getTime() > Number(parseInt(proposals.duration._hex, 16) + "000") ? "Expired" : daysRemaining(parseInt(proposals.duration._hex, 16))} </td>
+                                <td>
+                                    <div className="flex gap-4 items-center justify-center">
+                                        <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
+                                            <Link href={`/proposals/${proposals.id}`}>
+                                                <GrView />
+                                            </Link>
+                                        </button>
 
-                        <td> Zinzu Chan Lee</td>
-                        <td> Seoul </td>
-                        <td> 17 Dec, 2022 </td>
-                        <td>
-                            <div className="flex gap-4 items-center justify-center">
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <GrView />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <IoMdCheckmarkCircleOutline />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <LiaEthereum />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr className='text-slate-200s'>
+                                        {
+                                            new Date().getTime() > Number(proposals.duration) ? (
 
-                        <td> Zinzu Chan Lee</td>
-                        <td> Seoul </td>
-                        <td> 17 Dec, 2022 </td>
-                        <td>
-                            <div className="flex gap-4 items-center justify-center">
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <GrView />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <IoMdCheckmarkCircleOutline />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <LiaEthereum />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr className='text-slate-200s'>
+                                                Number(proposals.upvotes) > Number(proposals.downvotes) ? (
+                                                    !proposals.paid ? (
+                                                        <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 " onClick={()=>payOutBeneficiary(proposals.id)}>
+                                                            <LiaEthereum />
+                                                        </button>
+                                                    ) : (
+                                                        <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
+                                                            <IoMdCheckmarkCircleOutline />
+                                                        </button>
+                                                    )
+                                                ) : (
+                                                    <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
+                                                        <FcCancel />
+                                                    </button>
+                                                )
 
-                        <td> Zinzu Chan Lee</td>
-                        <td> Seoul </td>
-                        <td> 17 Dec, 2022 </td>
-                        <td>
-                            <div className="flex gap-4 items-center justify-center">
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <GrView />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <IoMdCheckmarkCircleOutline />
-                                </button>
-                                <button className="bg-indigo-400 p-2 rounded-md hover:bg-indigo-600 ">
-                                    <LiaEthereum />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                                            ) : null
+                                        }
 
 
+                                    </div>
+                                </td>
+                            </tr>)
+                    }
                 </tbody>
             </table>
         </section>

@@ -10,46 +10,27 @@ import Proposals from '@/components/Proposals'
 import img from '../public/6450149_3060323.svg'
 import Navbar from '@/components/navbar/Navbar'
 import Charts from '@/components/Charts'
+import 'react-toastify/dist/ReactToastify.css';
+import { checkWallet, getInfo, GetProposals } from '@/services/blockchain'
 dotenv.config();
 
-const address = "0x7C97EBc2Cf0d17d667FC9F9992104Cb17e00d96c"
+
 
 
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-
-  const [contract, setContract] = useState([])
-
-  console.log(address);
-  // console.log(Web3Modal)
-  // console.log(abi.abi)
-  // console.log(contract);
-
-  const fetchContract = (signerOrProvider: any) =>
-    new ethers.Contract(address, abi.abi, signerOrProvider)
-  const getEthereumContract = async () => {
-    try {
-      const web3modal = new Web3Modal();
-      const connection = await web3modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
-      const signer = provider.getSigner();
-      const contract = fetchContract(signer);
-      // return contract;
-      // setContract(contract)
-      console.log("this is", contract)
-    } catch (error) {
-      console.log(error);
-    }
+  const Refresh=async()=>{
+    await checkWallet()
+    getInfo()
+   const good= await GetProposals()
+   console.log( typeof good)
   }
 
-  useEffect(() => {
-    getEthereumContract()
-
-  }, [])
-
-
+  useEffect(()=>{},[
+    Refresh()
+  ])
 
   return (
 

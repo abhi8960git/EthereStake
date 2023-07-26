@@ -9,6 +9,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(
   CategoryScale,
@@ -19,12 +21,27 @@ ChartJS.register(
   Legend
 );
 
+import { RootState } from '@/utils/interfaces';
+
 const BarChart = () => {
+  
+  const {isStakeholder,proposals} =  useSelector((state:RootState)=> state.globalStates)
+  console.log(proposals);
+
+  const router = useRouter();
+  const { id }:any = router.query;
+
+
   const [chartData, setChartData] = useState({
     datasets: [],
   });
 
   const [chartOptions, setChartOptions] = useState({});
+
+console.log(Number(proposals[id].upvotes))
+
+const upvotes = proposals[id].upvotes;
+const downvotes = proposals[id].downvotes;
 
   useEffect(() => {
     setChartData({
@@ -32,7 +49,7 @@ const BarChart = () => {
         datasets: [
             {
                 label: 'Votes',
-                data: [18127, 22201],
+                data: [`${upvotes}`,`${downvotes}` ],
                 borderColor: '#3F51B5',
                 backgroundColor: '#3F51B5',
               }
@@ -45,7 +62,7 @@ const BarChart = () => {
             },
             title: {
                 display: true,
-                text: 'Proposal Detail'
+                // text: `${proposals[id].description}`
             }
         },
         scales: {
