@@ -47,6 +47,7 @@ const downvotes = proposals[id].downvotes;
     setChartData({
         labels: ['UpVotes', 'DownVotes'],
         datasets: [
+          // @ts-ignore
             {
                 label: 'Votes',
                 data: [`${upvotes}`,`${downvotes}` ],
