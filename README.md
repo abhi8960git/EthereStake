@@ -1,6 +1,6 @@
 
 
-Creating a README for a project based on the provided information:
+
 
 # Decentralized Autonomous Organization (DAO) Platform
 
