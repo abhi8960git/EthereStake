@@ -39,38 +39,38 @@ const Navbar = () => {
             <Modal.Body>
               <Text id="modal-description">
                 <br />
-                <h3>  1. Proposal Creation:</h3>
+                <h3>Proposal Creation</h3>
                 - Any user with an Ethereum wallet can initiate a proposal on the DAO platform.
                 - The user submits essential details about the proposal, including its purpose, budget, timeframe, and other relevant information.
                 - The proposal is recorded on the blockchain, ensuring transparency and immutability.
                 <br />
 
-                <h3>  2. Stakeholder Participation:</h3>
+                <h3>Stakeholder Participation</h3>
                 - To become a stakeholder, users must contribute a specified amount of ether to the DAO's smart contract address.
                 - The smart contract verifies the contribution and allocates voting rights to the user based on their stake.
                 - The more ether a user contributes, the greater their influence on voting decisions.
                 <br />
-                <h3> 3. Proposal Voting:</h3>
+                <h3> Proposal Voting</h3>
                 - During the proposal's voting period, stakeholders can cast their votes on the platform.
                 - Each stakeholder's vote is weighted based on the amount of ether they have staked.
                 - The voting process is conducted on the blockchain, ensuring transparency and preventing double voting or manipulation.
                 <br />
-                ,<h3> 4. Proposal Waiting Period:</h3>
+                ,<h3> Proposal Waiting Period</h3>
                 - After the voting period concludes, the proposal enters a waiting period.
                 - The waiting period allows time for the voting results to be finalized and any potential challenges to be addressed.
                 - During this period, stakeholders and other users can monitor the progress of the proposal.
                 <br />
-                <h3> 5. Proposal Completion:</h3>
+                <h3>Proposal Completion</h3>
                 - Once the waiting period ends, the proposal is considered complete.
                 - If the proposal receives a predetermined threshold of "yes" votes, it is deemed successful.
                 - If the proposal does not reach the threshold, it is considered unsuccessful.
                 <br />
-                <h3> 6. Payout for Beneficiary:</h3>
+                <h3>Payout for Beneficiary</h3>
                 - In the case of a successful proposal, the funds needed for the proposal are automatically released from the DAO's smart contract.
                 - The designated beneficiary of the proposal receives the allocated funds directly into their Ethereum wallet.
                 - The payout process is executed securely and without any intermediaries.
                 <br />
-                <h3>     7. Continuing Governance:</h3>
+                <h3> Continuing Governance</h3>
                 - Stakeholders and users can continually raise new proposals, vote on them, and participate in the DAO's governance.
                 - This iterative process ensures that the community remains actively engaged in decision-making and project funding.
                 <br />
