@@ -25,21 +25,23 @@ const connectWallet = async () => {
 
     try {
         if (!ethereum){
-            alert('Please install Metamask')
-            return;
+            reportError('Please install Metamask')
+    
         }
         const accounts = await ethereum.request?.({ method: 'eth_requestAccounts' })
         store.dispatch(setWallet(accounts?.[0]))
     } catch (error) {
-        alert("wallet doest not get Connected !")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
+
     }
 }
 
 const checkWallet = async () => {
     try {
         if (!ethereum){
-            alert('Please install Metamask')
-            return;
+            reportError('Please install Metamask')
+        
         }
         const accounts = await ethereum.request?.({ method: 'eth_accounts' })
 
@@ -57,10 +59,11 @@ const checkWallet = async () => {
             store.dispatch(setWallet(accounts[0]))
         } else {
             store.dispatch(setWallet(''))
-            alert('Please connect wallet, no accounts found.')
+            console.log('Please connect wallet, no accounts found.')
         }
     } catch (error) {
-        console.log(error);
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 }
 
@@ -78,8 +81,10 @@ const getEthereumContract = async () => {
 }
 
 const perfromContribute = async (amount: any) => {
-    if (!ethereum) return alert('Please install Metamask')
+    if (!ethereum){
+        reportError('Please install Metamask')
 
+    }
     try {
         const accounts = await ethereum?.request?.({ method: 'eth_accounts' });
         amount = toWei(amount);
@@ -88,14 +93,17 @@ const perfromContribute = async (amount: any) => {
         window.location.reload()
 
     } catch (error) {
-       alert("contribution get Failed")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 
 }
 
 const getInfo = async () => {
-    if (!ethereum) return alert('Please install Metamask')
-    try {
+    if (!ethereum){
+        reportError('Please install Metamask')
+
+    }    try {
         const contract = await getEthereumContract();
         const accounts = await ethereum?.request?.({ method: 'eth_accounts' });
         const isStakeholder = await contract.isStakeholder({ from: accounts[0] });
@@ -110,7 +118,8 @@ const getInfo = async () => {
         store.dispatch(setStakeHolder(isStakeholder));
 
     } catch (error) {
-        alert("opeation Failed")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 }
 
@@ -151,7 +160,8 @@ const getProposal = async (id: number): Promise<ProposalProp | undefined> => {
         const proposal = await contract.getProposal(id);
         return structuredProposals([proposal])[0];
     } catch (error) {
-alert("Can't able to get proposal")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 
 }
@@ -169,7 +179,8 @@ const raiseProposal = async (title: string, description: string, beneficiary: st
 
         window.location.reload()
     } catch (error) {
-      alert("Proposal raise Operation Failed !")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 }
 
@@ -180,7 +191,8 @@ const voteOnProposal = async (proposalId: number, supported: any) => {
         await contract.performVote(proposalId, supported)
         window.location.reload()
     } catch (error) {
-       alert("Operation get failed")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 }
 
@@ -191,9 +203,14 @@ const listVoters = async (id: number) => {
         const votes = await contract.getVotesOf(id)
         return votes
     } catch (error) {
-        alert("Operation get failed")
+        reportError(JSON.parse(JSON.stringify(error))?.reason)
+        window.alert(JSON.parse(JSON.stringify(error))?.reason)
     }
 }
+
+const reportError = (error: any) => {
+    console.log(error)
+  }
 
 const payOutBeneficiary = async (id: number) => {
     const contract = await getEthereumContract();

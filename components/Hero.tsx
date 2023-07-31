@@ -123,7 +123,7 @@ const Hero = () => {
             className=" flex"
             role="group"
           >
-            <Tooltip content={"Contribute 1 Ether, be a stakeholder"} rounded color="error">
+            <Tooltip content={"Contribute 0.004 Ether, be a stakeholder"} rounded color="error">
               {/* <Button handler={onContribute} name="Contribute" /> */}
               <button color="warning" onClick={onContribute} className='p-3 ml-4 rounded-full bg-indigo-400 hover:bg-indigo-500 text-white font-[600]'>
                 Contribute
@@ -177,7 +177,7 @@ const Hero = () => {
                   fullWidth
                   color="primary"
                   size="lg"
-                  placeholder="eg. 2.5 Eth"
+                  placeholder="eg: 2 Wei"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 // contentLeft={<Password fill="currentColor" />}
