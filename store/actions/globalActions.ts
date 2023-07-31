@@ -5,10 +5,10 @@ export const globalActions = {
   setWallet: (state: GlobalState, action: PayloadAction<string>) => {
     state.wallet = action.payload
   },
-  setBalance:(state:GlobalState, action:PayloadAction<number>)=>{
+  setBalance:(state:GlobalState, action:PayloadAction<string>)=>{
     state.balance = action.payload
   },
-  setUserBalance:(state:GlobalState, action:PayloadAction<number>)=>{
+  setUserBalance:(state:GlobalState, action:PayloadAction<string>)=>{
     state.myBalance = action.payload
   },
   setStakeHolder:(state:GlobalState, action:PayloadAction<Boolean>)=>{
