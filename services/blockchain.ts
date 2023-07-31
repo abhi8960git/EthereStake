@@ -24,17 +24,23 @@ const fromWei = (num: number) => ethers.utils.formatEther(num)
 const connectWallet = async () => {
 
     try {
-        if (!ethereum) return reportError('Please install Metamask')
+        if (!ethereum){
+            alert('Please install Metamask')
+            return;
+        }
         const accounts = await ethereum.request?.({ method: 'eth_requestAccounts' })
         store.dispatch(setWallet(accounts?.[0]))
     } catch (error) {
-        reportError(error)
+        alert("wallet doest not get Connected !")
     }
 }
 
 const checkWallet = async () => {
     try {
-        if (!ethereum) return reportError('Please install Metamask')
+        if (!ethereum){
+            alert('Please install Metamask')
+            return;
+        }
         const accounts = await ethereum.request?.({ method: 'eth_accounts' })
 
         // monitor chain change
@@ -51,7 +57,7 @@ const checkWallet = async () => {
             store.dispatch(setWallet(accounts[0]))
         } else {
             store.dispatch(setWallet(''))
-            reportError('Please connect wallet, no accounts found.')
+            alert('Please connect wallet, no accounts found.')
         }
     } catch (error) {
         console.log(error);
@@ -82,7 +88,7 @@ const perfromContribute = async (amount: any) => {
         window.location.reload()
 
     } catch (error) {
-        reportError(error);
+       alert("contribution get Failed")
     }
 
 }
@@ -104,7 +110,7 @@ const getInfo = async () => {
         store.dispatch(setStakeHolder(isStakeholder));
 
     } catch (error) {
-        reportError(error);
+        alert("opeation Failed")
     }
 }
 
@@ -145,7 +151,7 @@ const getProposal = async (id: number): Promise<ProposalProp | undefined> => {
         const proposal = await contract.getProposal(id);
         return structuredProposals([proposal])[0];
     } catch (error) {
-
+alert("Can't able to get proposal")
     }
 
 }
@@ -163,7 +169,7 @@ const raiseProposal = async (title: string, description: string, beneficiary: st
 
         window.location.reload()
     } catch (error) {
-        reportError(error);
+      alert("Proposal raise Operation Failed !")
     }
 }
 
@@ -174,7 +180,7 @@ const voteOnProposal = async (proposalId: number, supported: any) => {
         await contract.performVote(proposalId, supported)
         window.location.reload()
     } catch (error) {
-        reportError(error)
+       alert("Operation get failed")
     }
 }
 
@@ -185,7 +191,7 @@ const listVoters = async (id: number) => {
         const votes = await contract.getVotesOf(id)
         return votes
     } catch (error) {
-        reportError(error);
+        alert("Operation get failed")
     }
 }
 

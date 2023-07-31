@@ -26,7 +26,6 @@ import { RootState } from '@/utils/interfaces';
 const BarChart = () => {
   
   const {isStakeholder,proposals} =  useSelector((state:RootState)=> state.globalStates)
-  console.log(proposals);
 
   const router = useRouter();
   const { id }:any = router.query;
@@ -38,10 +37,9 @@ const BarChart = () => {
 
   const [chartOptions, setChartOptions] = useState({});
 
-console.log(Number(proposals[id].upvotes))
 
-const upvotes = proposals[id].upvotes;
-const downvotes = proposals[id].downvotes;
+const upvotes = proposals[id]?.upvotes;
+const downvotes = proposals[id]?.downvotes;
 
   useEffect(() => {
     setChartData({
