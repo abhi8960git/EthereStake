@@ -15,11 +15,11 @@ const ProposalDetail = () => {
 
   const router = useRouter();
   const { id }:any = router.query;
-  console.log( 'this is my id',id);
+  // console.log( 'this is my id',id);
 
   return (
     <main className={`flex max-h-screen w-full  flex-col overflow-hidden justify-center items-center  min-h-screen  ${inter.className} `}>
-      <h1 className='text-white'>{proposals[id].title}</h1>
+      <h1 className='text-white'>{proposals[id]?.title}</h1>
       <div className='w-full grid grid-cols-2 gap-6 mx-10  justify-evenly items-center '>
         <div className='md:col-span-1 col-span-2 items-center justify-center'>
           <Charts />
