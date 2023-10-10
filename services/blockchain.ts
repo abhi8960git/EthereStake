@@ -14,9 +14,7 @@ let tx: any
 
 const { setWallet, setUserBalance, setBalance, setStakeHolder, setProposals } = globalActions;
 
-if (typeof window !== 'undefined') {
-    ethereum = (window as any).ethereum
-}
+
 
 const toWei = (num: number) => ethers.utils.parseEther(num.toString())
 const fromWei = (num: number) => ethers.utils.formatEther(num)
@@ -24,7 +22,7 @@ const fromWei = (num: number) => ethers.utils.formatEther(num)
 const connectWallet = async () => {
 
     try {
-        if (!ethereum){
+        if (window.ethereum){
             reportError('Please install Metamask')
     
         }
