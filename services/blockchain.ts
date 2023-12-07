@@ -19,64 +19,58 @@ const { setWallet, setUserBalance, setBalance, setStakeHolder, setProposals } = 
 const toWei = (num: number) => ethers.utils.parseEther(num.toString())
 const fromWei = (num: number) => ethers.utils.formatEther(num)
 
-const connectWallet = async () => {
 
+if (typeof window !== 'undefined') {
+    ethereum = (window as any).ethereum
+  }
+
+
+  const connectWallet = async () => {
     try {
-        if (window.ethereum){
-            reportError('Please install Metamask')
-    
-        }
-        const accounts = await ethereum.request?.({ method: 'eth_requestAccounts' })
+      if (!ethereum) return reportError('Please install Metamask')
+      const accounts = await ethereum.request?.({ method: 'eth_requestAccounts' })
+      store.dispatch(setWallet(accounts?.[0]))
+    } catch (error) {
+      reportError(error)
+    }
+  }
+  const checkWallet = async () => {
+    try {
+      if (!ethereum) return reportError('Please install Metamask')
+      const accounts = await ethereum.request?.({ method: 'eth_accounts' })
+  
+      // monitor chain change
+      ethereum.on('chainChanged', () => {
+        window.location.reload()
+      })
+  
+      ethereum.on('accountsChanged', async () => {
         store.dispatch(setWallet(accounts?.[0]))
+        await checkWallet()
+      })
+  
+      if (accounts?.length) {
+        store.dispatch(setWallet(accounts[0]))
+      } else {
+        store.dispatch(setWallet(''))
+        reportError('Please connect wallet, no accounts found.')
+      }
     } catch (error) {
-        reportError(JSON.parse(JSON.stringify(error))?.reason)
-        window.alert(JSON.parse(JSON.stringify(error))?.reason)
-
+      reportError(error)
     }
-}
-
-const checkWallet = async () => {
-    try {
-        if (!ethereum){
-            reportError('Please install Metamask')
-        
-        }
-        const accounts = await ethereum.request?.({ method: 'eth_accounts' })
-
-        // monitor chain change
-        ethereum.on('chainChanged', () => {
-            window.location.reload()
-        })
-
-        ethereum.on('accountsChanged', async () => {
-            store.dispatch(setWallet(accounts?.[0]))
-            await checkWallet()
-        })
-
-        if (accounts?.length) {
-            store.dispatch(setWallet(accounts[0]))
-        } else {
-            store.dispatch(setWallet(''))
-            console.log('Please connect wallet, no accounts found.')
-        }
-    } catch (error) {
-        reportError(JSON.parse(JSON.stringify(error))?.reason)
-        window.alert(JSON.parse(JSON.stringify(error))?.reason)
-    }
-}
+  }
 
 const getEthereumContract = async () => {
-    const accounts = await ethereum?.request?.({ method: 'eth_accounts' });
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const wallet = accounts?.[0] ? null : ethers.Wallet.createRandom();
-    const signer = provider.getSigner(accounts?.[0] ? undefined : wallet?.address);
-
-    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer);
-    // console.log(contract)
-
-    return contract;
-    // console.log( await contract.getProposals({from:accounts[0]}))
-}
+    const accounts = await ethereum?.request?.({ method: 'eth_accounts' })
+    const provider = accounts?.[0]
+      ? new ethers.providers.Web3Provider(ethereum)
+      : new ethers.providers.JsonRpcProvider(process.env.NEXT_APP_RPC_URL)
+    const wallet = accounts?.[0] ? null : ethers.Wallet.createRandom()
+    const signer = provider.getSigner(accounts?.[0] ? undefined : wallet?.address)
+  
+    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer)
+    return contract
+  }
 
 const perfromContribute = async (amount: any) => {
     if (!ethereum){
